@@ -500,20 +500,15 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-
-  document.querySelectorAll('img[src*="s"],img[src*="h"]').forEach(img => {
+  
+};
+    
+  <script> document.querySelectorAll('img[src*="s"],img[src*="h"]').forEach(img => {
   img.style.transition = 'all .3s ease';
   img.onmouseenter = () => img.style.filter = 'contrast(1.1) saturate(1.15) brightness(1.05)';
   img.onmouseleave = () => img.style.filter = 'contrast(1.03) saturate(1.08)';
 });
-
-document.querySelector('h1').onclick = () => {
-  document.querySelector('h1').style.transform = 'scale(1.1)';
-  setTimeout(() => document.querySelector('h1').style.transform = 'scale(1)', 150);
-  for(let i=0; i<6; i++) setTimeout(() => spawnHeart(), i*80);
-};
     
-  <script>
     // Hearts
     const heartLayer = document.getElementById("heartLayer");
     function spawnHeart(){
