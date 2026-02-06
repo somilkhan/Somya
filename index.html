@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Be My Valentine?</title>
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#ffb6c1;
+  font-family: Arial, sans-serif;
+  overflow:hidden;
+  text-align:center;
+}
+
+h1{
+  color:white;
+  font-size:40px;
+  margin-bottom:40px;
+}
+
+button{
+  padding:15px 30px;
+  font-size:20px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+#yes{
+  background:red;
+  color:white;
+}
+
+#no{
+  background:white;
+  color:red;
+  position:absolute;
+}
+</style>
+</head>
+<body>
+
+<div>
+  <h1 id="question">Will you be my Valentine?</h1>
+  <button id="yes">Yes ❤️</button>
+  <button id="no">No</button>
+</div>
+
+<script>
+let no = document.getElementById("no");
+let yes = document.getElementById("yes");
+let question = document.getElementById("question");
+
+let messages = [
+  "Are you sure?",
+  "Think again 🥺",
+  "Please?",
+  "Don't break my heart",
+  "Last chance!",
+  "You can't escape destiny",
+  "Just press Yes already 😭"
+];
+
+let index = 0;
+
+no.addEventListener("mouseover", () => {
+  no.style.left = Math.random() * (window.innerWidth - 100) + "px";
+  no.style.top = Math.random() * (window.innerHeight - 50) + "px";
+
+  question.innerText = messages[index % messages.length];
+  index++;
+
+  let size = 20 + index * 5;
+  yes.style.fontSize = size + "px";
+  yes.style.padding = (15 + index * 3) + "px " + (30 + index * 5) + "px";
+
+  no.style.transform = `scale(${1 - index * 0.05})`;
+});
+
+yes.onclick = () => {
+  document.body.innerHTML = "<h1 style='color:white;margin-top:40vh;'>I knew it ❤️ See you on Valentine!</h1>";
+};
+</script>
+
+</body>
+</html>
