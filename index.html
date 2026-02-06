@@ -17,6 +17,20 @@ body{
   text-align:center;
 }
 
+/* floating hearts */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:url("https://i.imgur.com/8Qf6K6G.png") repeat;
+  opacity:.08;
+  animation:moveBg 40s linear infinite;
+}
+@keyframes moveBg{
+  from{background-position:0 0;}
+  to{background-position:0 1000px;}
+}
+
 .scene{
   position:absolute;
   width:100%;
@@ -48,26 +62,23 @@ h1{
 
 .pic{
   position:absolute;
-  width:160px;
-  height:200px;
+  width:170px;
+  height:210px;
   object-fit:cover;
   border-radius:18px;
   box-shadow:0 20px 40px rgba(0,0,0,0.25);
   opacity:0;
-  transform:rotate(-15deg) translateX(-200px);
   transition:1s ease;
   pointer-events:none;
 }
 
-.pic.right{
-  transform:rotate(15deg) translateX(200px);
-}
+.leftStart{ transform:rotate(-15deg) translateX(-220px); }
+.rightStart{ transform:rotate(15deg) translateX(220px); }
 
 .showLeft{
   opacity:1;
   transform:rotate(-10deg) translateX(-40px);
 }
-
 .showRight{
   opacity:1;
   transform:rotate(10deg) translateX(40px);
@@ -84,36 +95,39 @@ button{
   margin:10px;
   font-size:16px;
 }
+
 #yes{background:#ff4d88;color:white;}
-#no{background:#eee;}
+#no{background:#eee; position:relative;}
 </style>
 </head>
 
 <body>
 
-<!-- Pics -->
-<img src="pic1.jpg" class="pic" id="p1" style="top:15%;left:0;">
-<img src="pic2.jpg" class="pic right" id="p2" style="top:20%;right:0;">
-<img src="pic3.jpg" class="pic" id="p3" style="bottom:20%;left:0;">
-<img src="pic4.jpg" class="pic right" id="p4" style="bottom:15%;right:0;">
+<!-- Your Photos -->
+<img src="s1.jpg" class="pic leftStart" id="p1" style="top:12%;left:0;">
+<img src="s2.jpg" class="pic rightStart" id="p2" style="top:18%;right:0;">
+<img src="h1.jpg" class="pic leftStart" id="p3" style="bottom:28%;left:0;">
+<img src="h2.jpg" class="pic rightStart" id="p4" style="bottom:22%;right:0;">
+<img src="h3.jpg" class="pic leftStart" id="p5" style="bottom:5%;left:30%;">
 
+<!-- Scenes -->
 <div class="scene" id="s1">
-  <h1>I was not planning to do this…</h1>
+  <h1>I wasn’t going to do this…</h1>
   <button class="tap" onclick="next(1)">Tap</button>
 </div>
 
 <div class="scene hidden" id="s2">
-  <h1>But then I saw you… Somya</h1>
+  <h1>But then I matched with you on Hinge</h1>
   <button class="tap" onclick="next(2)">Tap</button>
 </div>
 
 <div class="scene hidden" id="s3">
-  <h1>And now I cannot pretend this is normal</h1>
+  <h1>And your vibe hasn’t left my head since</h1>
   <button class="tap" onclick="next(3)">Tap</button>
 </div>
 
 <div class="scene hidden" id="s4">
-  <h1>So tell me…</h1>
+  <h1>So Somya… be honest</h1>
   <div class="buttons">
     <button id="yes">Yes 💖</button>
     <button id="no">No</button>
@@ -125,17 +139,27 @@ function next(step){
   document.getElementById("s"+step).classList.add("hidden");
   document.getElementById("s"+(step+1)).classList.remove("hidden");
 
-  if(step==1){
-    p1.classList.add("showLeft");
-  }
-  if(step==2){
-    p2.classList.add("showRight");
-  }
+  if(step==1){ p1.classList.add("showLeft"); }
+  if(step==2){ p2.classList.add("showRight"); }
   if(step==3){
     p3.classList.add("showLeft");
     p4.classList.add("showRight");
+    p5.classList.add("showLeft");
   }
 }
+
+// moving NO button
+const noBtn=document.getElementById("no");
+noBtn.addEventListener("mouseover",()=>{
+  const x=Math.random()*200-100;
+  const y=Math.random()*100-50;
+  noBtn.style.transform=`translate(${x}px,${y}px)`;
+});
+
+// yes action
+document.getElementById("yes").onclick=()=>{
+  document.body.innerHTML="<h1 style='font-family:system-ui'>Yay ❤️ See you on our date Somya</h1>";
+};
 </script>
 
 </body>
