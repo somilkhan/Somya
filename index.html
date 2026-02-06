@@ -1,149 +1,703 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Somya</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Be my Valentine</title>
 
-<style>
-body{
-  margin:0;
-  background:linear-gradient(180deg,#ffe3ec,#fff5f8);
-  font-family: 'Segoe UI', sans-serif;
-  overflow:hidden;
-}
+  <style>
+    :root{
+      --pink1:#ffe6f0;
+      --pink2:#ffd6e8;
+      --card: rgba(255,255,255,.90);
+      --shadow: rgba(255,105,180,.22);
+      --yes1:#ff4d88;
+      --yes2:#ff2f72;
+      --text:#2b2b2b;
+    }
+    *{box-sizing:border-box}
 
-.slide{
-  height:100vh;
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  flex-direction:column;
-  padding:30px;
-  box-sizing:border-box;
-  position:relative;
-  transition:opacity 0.6s ease;
-}
+    html, body{
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
 
-h1{
-  font-size:28px;
-  color:#ff4d6d;
-  line-height:1.5;
-  max-width:420px;
-}
+    body{
+      margin:0;
+      min-height:100svh;
+      display:grid;
+      place-items:center;
+      padding:18px;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1100px 750px at 20% 15%, #fff 0%, transparent 55%),
+        radial-gradient(900px 650px at 80% 25%, #fff 0%, transparent 55%),
+        linear-gradient(135deg,var(--pink1),var(--pink2));
+      overflow:hidden;
+      position:relative;
+    }
 
-button{
-  margin-top:30px;
-  padding:12px 28px;
-  border:none;
-  border-radius:14px;
-  font-size:18px;
-  background:#ff4d6d;
-  color:white;
-  cursor:pointer;
-}
+    /* Falling hearts (screen background only) */
+    .heart-layer{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:0;
+    }
+    .heart{
+      position:absolute;
+      top:-24px;
+      opacity:.9;
+      will-change: transform, opacity;
+      animation: fall linear forwards;
+      filter: drop-shadow(0 8px 12px rgba(255,105,180,.18));
+      user-select:none;
+    }
+    @keyframes fall{
+      to{ transform: translateY(115vh) rotate(360deg); opacity:0; }
+    }
 
-/* tilted photo style */
-.pic{
-  position:absolute;
-  width:150px;
-  height:190px;
-  object-fit:cover;
-  border-radius:16px;
-  box-shadow:0 15px 35px rgba(0,0,0,0.25);
-  opacity:0;
-  transition:1s ease;
-  pointer-events:none;
-}
+    /* Main white container */
+    .card{
+      width:min(680px,94vw);
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.65);
+      border-radius:24px;
+      box-shadow:0 18px 60px var(--shadow);
+      padding:26px 20px;
+      text-align:center;
+      backdrop-filter: blur(10px);
+      position:relative;
+      z-index:2;
+      overflow:hidden; /* prevents hearts entering this card */
+    }
 
-.left{ left:15px; top:20%; transform:rotate(-12deg); opacity:1; }
-.right{ right:15px; top:20%; transform:rotate(12deg); opacity:1; }
-.bottomL{ left:15px; bottom:12%; transform:rotate(10deg); opacity:1; }
-.bottomR{ right:15px; bottom:12%; transform:rotate(-10deg); opacity:1; }
-.center{ top:55%; left:50%; transform:translate(-50%,-50%) rotate(0); width:230px; height:150px; opacity:1; }
+    h1{
+      margin:6px 0 10px;
+      font-size: clamp(26px, 5vw, 38px);
+      letter-spacing:-.02em;
+    }
 
-#no{
-  position:absolute;
-  background:white;
-  color:#ff4d6d;
-}
-</style>
+    .dogTop{
+      font-size: clamp(64px, 12vw, 86px);
+      line-height:1;
+      margin: 6px 0 10px;
+      user-select:none;
+    }
+    .dogSmall{
+      font-size: clamp(44px, 8vw, 58px);
+      line-height:1;
+      margin: 6px 0 6px;
+      user-select:none;
+    }
+
+    /* Grey button area */
+    .area{
+      position:relative;
+      width:100%;
+      max-width:520px;
+      margin: 8px auto 0;
+      height: 125px;
+      background: rgba(240,240,240,.72);
+      border: 1px solid rgba(0,0,0,.06);
+      border-radius: 18px;
+      overflow:hidden;
+    }
+
+    button{
+      border:none;
+      padding:14px 24px;
+      border-radius:999px;
+      font-size:16px;
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color:transparent;
+      touch-action: manipulation;
+      transition: transform .12s ease, box-shadow .12s ease;
+      white-space:nowrap;
+      line-height:1;
+    }
+
+    #yes{
+      background: linear-gradient(135deg,var(--yes1),var(--yes2));
+      color:#fff;
+      box-shadow:0 10px 22px rgba(255,77,136,.30);
+      position:absolute;
+      left:24px;
+      top:50%;
+      transform: translateY(-50%);
+      z-index:2;
+    }
+
+    #no{
+      background:#e9e9e9;
+      color:#333;
+      box-shadow:0 10px 18px rgba(0,0,0,.10);
+      position:absolute;
+      right:24px;
+      top:50%;
+      transform: translateY(-50%);
+      z-index:1;
+    }
+
+    .hint{
+      font-size:13px;
+      opacity:.6;
+      margin-top:8px;
+    }
+
+    .hidden{ display:none; }
+
+    .panelTitle{
+      margin: 8px 0 8px;
+      font-size: clamp(18px, 3.8vw, 22px);
+      font-weight:800;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .choice{
+      background:#ffedf4;
+      border:1px solid rgba(255,77,136,.18);
+      box-shadow:0 10px 18px rgba(255,77,136,.10);
+      padding:12px 10px;
+      border-radius:16px;
+      font-size:15px;
+    }
+
+    .otherRow{
+      margin-top:12px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    input{
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(0,0,0,.12);
+      width:min(420px, 92%);
+      font-size:15px;
+      outline:none;
+      background:#fff;
+    }
+
+    .confirm{
+      background: linear-gradient(135deg,var(--yes1),var(--yes2));
+      color:#fff;
+      box-shadow:0 10px 22px rgba(255,77,136,.25);
+    }
+
+    .final{ animation: pop .35s ease-out; }
+    @keyframes pop{
+      from{ transform: translateY(8px) scale(.98); opacity:0; }
+      to{ transform: translateY(0) scale(1); opacity:1; }
+    }
+
+    /* ===========================
+       ✅ FIXED INVITATION LAYOUT
+       Pink frame OUTSIDE only
+       White invitation INSIDE only
+       =========================== */
+
+    .inviteOuter{
+      margin-top:12px;
+      padding:16px;
+      border-radius:26px;
+      background: linear-gradient(135deg,#ffe6f0,#ffd6e8); /* pink OUTSIDE */
+      border:1px solid rgba(255,77,136,.18);
+      box-shadow:0 14px 45px rgba(255,105,180,.12);
+    }
+
+    /* hearts around invitation OUTSIDE (still outside the white) */
+    .inviteOuterHearts{
+      padding:16px;
+      border-radius:22px;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Crect width='240' height='240' fill='%23ffe6f0'/%3E%3Cg opacity='0.25'%3E%3Ctext x='16' y='58' font-size='28'%3E%F0%9F%92%97%3C/text%3E%3Ctext x='132' y='90' font-size='26'%3E%F0%9F%92%96%3C/text%3E%3Ctext x='70' y='140' font-size='24'%3E%F0%9F%92%98%3C/text%3E%3Ctext x='170' y='170' font-size='26'%3E%F0%9F%92%9E%3C/text%3E%3Ctext x='28' y='198' font-size='26'%3E%F0%9F%92%95%3C/text%3E%3C/g%3E%3C/svg%3E")
+        repeat;
+      border:1px solid rgba(0,0,0,.06);
+    }
+
+    /* ✅ PURE WHITE invitation. NOTHING pink inside. */
+    .inviteCard{
+      background:#fff;
+      border-radius:18px;
+      padding:22px 18px;
+      border:1px solid rgba(0,0,0,.10);
+      box-shadow:0 12px 28px rgba(0,0,0,.06);
+    }
+
+    .finalIcons{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:16px;
+      margin: 10px 0 6px;
+      font-size: clamp(64px, 13vw, 90px);
+      line-height:1;
+      user-select:none;
+    }
+
+    .whiteCat{
+      display:inline-block;
+      filter: grayscale(1) brightness(1.9);
+      text-shadow:
+        0 2px 0 rgba(0,0,0,.18),
+        2px 0 0 rgba(0,0,0,.12),
+        -2px 0 0 rgba(0,0,0,.12),
+        0 -2px 0 rgba(0,0,0,.10);
+    }
+
+    .bigLove{
+      font-size: clamp(20px, 4.2vw, 26px);
+      font-weight:900;
+      margin: 10px 0 8px;
+    }
+
+    .summary{
+      font-size:16px;
+      margin: 6px 0 0;
+      line-height:1.55;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .btnDark{
+      background:#111;
+      color:#fff;
+      box-shadow:0 10px 18px rgba(0,0,0,.15);
+    }
+    .btnSoft{
+      background:#fff;
+      border:1px solid rgba(0,0,0,.12);
+      box-shadow:0 10px 18px rgba(0,0,0,.06);
+    }
+
+    /* QR SHOW MODAL */
+    .modalBack{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.45);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:50;
+    }
+    .modal{
+      width:min(520px,95vw);
+      background:#fff;
+      border-radius:18px;
+      padding:16px;
+      box-shadow:0 18px 60px rgba(0,0,0,.22);
+      text-align:center;
+    }
+    .modalTitle{
+      font-weight:800;
+      margin:6px 0 10px;
+      font-size:18px;
+    }
+    .qrBox{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:14px;
+      border-radius:16px;
+      border:1px solid rgba(0,0,0,.10);
+      background:#fff;
+      width: fit-content;
+      margin: 0 auto;
+    }
+
+    .dateBox{
+      display:flex;
+      justify-content:center;
+      margin-top:10px;
+    }
+    .dateInput{
+      width:min(320px, 92%);
+    }
+
+    /* ===== PRINT ===== */
+    @page { margin: 0; }
+    @media print{
+      body{
+        margin:0 !important;
+        padding:0 !important;
+        min-height:100vh !important;
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+        background: linear-gradient(135deg,#ffe6f0,#ffd6e8) !important;
+      }
+      body::before{
+        content:"";
+        position:fixed;
+        inset:0;
+        background:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Crect width='220' height='220' fill='%23ffe6f0'/%3E%3Cg opacity='0.45'%3E%3Ctext x='18' y='62' font-size='28'%3E%F0%9F%92%97%3C/text%3E%3Ctext x='130' y='90' font-size='26'%3E%F0%9F%92%96%3C/text%3E%3Ctext x='70' y='140' font-size='24'%3E%F0%9F%92%98%3C/text%3E%3C/g%3E%3C/svg%3E")
+          repeat !important;
+        z-index:0;
+      }
+
+      .heart-layer{ display:none !important; }
+      #step1,#step2,#step3,#step4,h1,.hint,.actions,.modalBack{ display:none !important; }
+
+      /* print ONLY the invitation centered */
+      .card{
+        box-shadow:none !important;
+        border:none !important;
+        background:transparent !important;
+        backdrop-filter:none !important;
+        padding:0 !important;
+      }
+      #final{ display:block !important; }
+
+      /* keep invitation block as-is */
+      .inviteOuter, .inviteOuterHearts, .inviteCard{ break-inside: avoid; }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="heart-layer" id="heartLayer"></div>
 
-<div class="slide" id="slide">
-  <h1 id="text">Hey Somya 🙂</h1>
-  <button id="next">Tap</button>
+  <div class="card">
+    <h1>Will you be my Valentine? 💘</h1>
 
-  <img src="s1.jpg" class="pic" id="p1">
-  <img src="s2.jpg" class="pic" id="p2">
-  <img src="h1.jpg" class="pic" id="p3">
-  <img src="h2.jpg" class="pic" id="p4">
-  <img src="h3.jpg" class="pic" id="p5">
-</div>
-
-<script>
-let step=0;
-let text=document.getElementById("text");
-let next=document.getElementById("next");
-
-next.onclick=()=>{
-  step++;
-
-  if(step===1){
-    text.innerText="I made something small for you";
-  }
-
-  else if(step===2){
-    text.innerText="Because I noticed something...";
-    p1.classList.add("left");
-  }
-
-  else if(step===3){
-    text.innerText="You look dangerously cute in photos";
-    p2.classList.add("right");
-  }
-
-  else if(step===4){
-    text.innerText="And this is where it gets unfair";
-    p3.classList.add("center");
-  }
-
-  else if(step===5){
-    text.innerText="Yeah... I had to use these too 😌";
-    p4.classList.add("bottomL");
-    p5.classList.add("bottomR");
-  }
-
-  else if(step===6){
-    finalQuestion();
-  }
-};
-
-function finalQuestion(){
-  document.getElementById("slide").innerHTML=`
-    <h1>So Somya...<br>will you be my Valentine?</h1>
-    <button id="yes">Yes ❤️</button>
-    <button id="no">No</button>
-  `;
-
-  let no=document.getElementById("no");
-  no.addEventListener("mouseover",()=>{
-    no.style.left=Math.random()*(window.innerWidth-100)+"px";
-    no.style.top=Math.random()*(window.innerHeight-50)+"px";
-  });
-
-  document.getElementById("yes").onclick=()=>{
-    document.body.innerHTML=`
-      <div class="slide">
-        <h1>Yay ❤️<br>See you on Valentine, Somya</h1>
+    <!-- STEP 1 -->
+    <div id="step1">
+      <div class="dogTop">🐶</div>
+      <div class="area" id="area">
+        <button id="yes" type="button">Yes 💖</button>
+        <button id="no" type="button" aria-label="No">No</button>
       </div>
-    `;
-  };
-}
-</script>
+      <div class="hint">Hint: the “No” button is shy</div>
+    </div>
 
-</body>
-</html>
+    <!-- STEP 2 -->
+    <div id="step2" class="hidden">
+      <div class="panelTitle">Choose our date</div>
+      <div class="dogSmall">🐶</div>
+      <div class="grid" id="activityGrid"></div>
+
+      <div class="otherRow hidden" id="activityOtherRow">
+        <input id="activityOtherInput" placeholder="Type what you want (ex: bowling)" />
+        <button class="confirm" id="activityOtherConfirm" type="button">Confirm</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div id="step3" class="hidden">
+      <div class="panelTitle">Choose the hour</div>
+      <div class="dogSmall">🐶</div>
+      <div class="grid" id="timeGrid"></div>
+
+      <div class="otherRow hidden" id="timeOtherRow">
+        <input id="timeOtherInput" placeholder="Type the exact time (ex: 7:30 PM)" />
+        <button class="confirm" id="timeOtherConfirm" type="button">Confirm</button>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div id="step4" class="hidden">
+      <div class="panelTitle">Choose the date (2026)</div>
+      <div class="dogSmall">🐶</div>
+
+      <div class="dateBox">
+        <input class="dateInput" id="datePicker" type="date" />
+      </div>
+
+      <div class="otherRow">
+        <button class="confirm" id="dateConfirm" type="button">Confirm</button>
+      </div>
+
+      <div class="hint">Only dates in 2026 are allowed.</div>
+    </div>
+
+    <!-- FINAL -->
+    <div id="final" class="hidden final">
+      <div class="inviteOuter">
+        <div class="inviteOuterHearts">
+          <div class="inviteCard">
+            <div class="finalIcons">
+              <span>🐶</span>
+              <span>❤️</span>
+              <span class="whiteCat">🐱</span>
+            </div>
+
+            <div class="bigLove">YAY!! You are my Valentine 💘💗</div>
+            <div class="summary" id="summaryText"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btnDark" id="printBtn" type="button">Print</button>
+        <button class="btnSoft" id="showQrBtn" type="button">Scan QR</button>
+      </div>
+
+      <div class="hint">
+        In print settings: turn OFF “Headers and footers” to remove the link/date.
+      </div>
+    </div>
+  </div>
+
+  <!-- QR MODAL -->
+  <div class="modalBack" id="qrModal">
+    <div class="modal">
+      <div class="modalTitle">Your QR code</div>
+      <div class="qrBox"><div id="qrGenerated"></div></div>
+      <div class="actions" style="margin-top:12px">
+        <button class="btnDark" id="closeQrBtn" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+  <script>
+    // Hearts
+    const heartLayer = document.getElementById("heartLayer");
+    function spawnHeart(){
+      const h = document.createElement("div");
+      h.className = "heart";
+      const hearts = ["💗","💖","💘","💞","💕"];
+      h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+
+      const left = Math.random() * 100;
+      const size = 12 + Math.random() * 18;
+      const dur  = 4 + Math.random() * 4.5;
+      const drift = (Math.random() * 18) - 9;
+
+      h.style.left = left + "vw";
+      h.style.fontSize = size + "px";
+      h.style.animationDuration = dur + "s";
+      h.style.transform = `translateX(${drift}vw)`;
+
+      heartLayer.appendChild(h);
+      setTimeout(() => h.remove(), (dur + 0.3) * 1000);
+    }
+    setInterval(spawnHeart, 240);
+    for(let i=0;i<14;i++) setTimeout(spawnHeart, i*90);
+
+    // No button dodge (bug-free)
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const area = document.getElementById("area");
+
+    function setNoInitialSymmetric(){
+      noBtn.style.left = "auto";
+      noBtn.style.right = "24px";
+      noBtn.style.top = "50%";
+      noBtn.style.transform = "translateY(-50%)";
+    }
+
+    function placeNoSafely() {
+      const areaRect = area.getBoundingClientRect();
+      const noW = noBtn.offsetWidth;
+      const noH = noBtn.offsetHeight;
+      const yesRect = yesBtn.getBoundingClientRect();
+
+      const pad = 10;
+      const minX = pad;
+      const maxX = Math.max(pad, areaRect.width - noW - pad);
+      const minY = pad;
+      const maxY = Math.max(pad, areaRect.height - noH - pad);
+
+      const yesLocalX = yesRect.left - areaRect.left;
+      const yesLocalY = yesRect.top  - areaRect.top;
+
+      const forbidden = {
+        x1: yesLocalX - 16,
+        y1: yesLocalY - 16,
+        x2: yesLocalX + yesRect.width + 16,
+        y2: yesLocalY + yesRect.height + 16
+      };
+
+      for (let i = 0; i < 260; i++) {
+        const x = Math.floor(minX + Math.random() * (maxX - minX));
+        const y = Math.floor(minY + Math.random() * (maxY - minY));
+
+        const overlapsYes =
+          !(x + noW < forbidden.x1 ||
+            x > forbidden.x2 ||
+            y + noH < forbidden.y1 ||
+            y > forbidden.y2);
+
+        if (!overlapsYes) {
+          noBtn.style.left = x + "px";
+          noBtn.style.top  = y + "px";
+          noBtn.style.right = "auto";
+          noBtn.style.transform = "none";
+          return;
+        }
+      }
+    }
+
+    function dodge(e){
+      if (e) e.preventDefault?.();
+      placeNoSafely();
+    }
+
+    noBtn.addEventListener("mouseenter", dodge);
+    noBtn.addEventListener("touchstart", dodge, { passive:false });
+    noBtn.addEventListener("pointerdown", dodge);
+    noBtn.addEventListener("click", dodge);
+    noBtn.addEventListener("focus", dodge);
+
+    window.addEventListener("load", () => {
+      setNoInitialSymmetric();
+      setTimeout(setNoInitialSymmetric, 60);
+    });
+
+    // Steps
+    const step1 = document.getElementById("step1");
+    const step2 = document.getElementById("step2");
+    const step3 = document.getElementById("step3");
+    const step4 = document.getElementById("step4");
+    const final = document.getElementById("final");
+
+    const activityGrid = document.getElementById("activityGrid");
+    const timeGrid = document.getElementById("timeGrid");
+    const summaryText = document.getElementById("summaryText");
+
+    const activityOtherRow = document.getElementById("activityOtherRow");
+    const activityOtherInput = document.getElementById("activityOtherInput");
+    const activityOtherConfirm = document.getElementById("activityOtherConfirm");
+
+    const timeOtherRow = document.getElementById("timeOtherRow");
+    const timeOtherInput = document.getElementById("timeOtherInput");
+    const timeOtherConfirm = document.getElementById("timeOtherConfirm");
+
+    const datePicker = document.getElementById("datePicker");
+    const dateConfirm = document.getElementById("dateConfirm");
+
+    const printBtn = document.getElementById("printBtn");
+    const showQrBtn = document.getElementById("showQrBtn");
+    const qrModal = document.getElementById("qrModal");
+    const closeQrBtn = document.getElementById("closeQrBtn");
+    const qrGenerated = document.getElementById("qrGenerated");
+
+    let chosenActivity = "";
+    let chosenTime = "";
+    let chosenDate = "";
+    let qrUrl = "";
+
+    datePicker.min = "2026-01-01";
+    datePicker.max = "2026-12-31";
+    datePicker.value = "2026-02-14";
+
+    const activities = [
+      "Cinema 🎬","Restaurant 🍽️","Romantic Dinner 🍷","Home Movie Night 🍿",
+      "Ice Cream Date 🍦","Picnic 🧺","Coffee Date ☕","Sunset Walk 🌙",
+      "Late Night Drive 🚗","Surprise Date 🎁","Other (type it) ✍️"
+    ];
+
+    const times = [
+      "4:00 PM","5:00 PM","6:00 PM","7:00 PM","8:00 PM",
+      "9:00 PM","10:00 PM","11:00 PM","12:00 AM","Anytime",
+      "Other (type it)"
+    ];
+
+    yesBtn.addEventListener("click", () => {
+      step1.classList.add("hidden");
+      step2.classList.remove("hidden");
+      renderActivities();
+    });
+
+    function renderActivities(){
+      activityGrid.innerHTML = "";
+      activityOtherRow.classList.add("hidden");
+      activityOtherInput.value = "";
+
+      activities.forEach(label => {
+        const b = document.createElement("button");
+        b.className = "choice";
+        b.type = "button";
+        b.textContent = label;
+        b.onclick = () => {
+          if (label.startsWith("Other")) {
+            activityOtherRow.classList.remove("hidden");
+            activityOtherInput.focus();
+          } else {
+            chosenActivity = label;
+            step2.classList.add("hidden");
+            step3.classList.remove("hidden");
+            renderTimes();
+          }
+        };
+        activityGrid.appendChild(b);
+      });
+    }
+
+    activityOtherConfirm.onclick = () => {
+      const v = activityOtherInput.value.trim();
+      if (!v) { activityOtherInput.focus(); return; }
+      chosenActivity = v;
+      step2.classList.add("hidden");
+      step3.classList.remove("hidden");
+      renderTimes();
+    };
+
+    function renderTimes(){
+      timeGrid.innerHTML = "";
+      timeOtherRow.classList.add("hidden");
+      timeOtherInput.value = "";
+
+      times.forEach(label => {
+        const b = document.createElement("button");
+        b.className = "choice";
+        b.type = "button";
+        b.textContent = label;
+        b.onclick = () => {
+          if (label.startsWith("Other")) {
+            timeOtherRow.classList.remove("hidden");
+            timeOtherInput.focus();
+          } else {
+            chosenTime = label;
+            goDateStep();
+          }
+        };
+        timeGrid.appendChild(b);
+      });
+    }
+
+    timeOtherConfirm.onclick = () => {
+      const v = timeOtherInput.value.trim();
+      if (!v) { timeOtherInput.focus(); return; }
+      chosenTime = v;
+      goDateStep();
+    };
+
+    function goDateStep(){
+      step3.classList.add("hidden");
+      step4.classList.remove("hidden");
+    }
+
+    dateConfirm.addEventListener("click", () => {
+      const v = datePicker.value;
+      if (!v || !v.startsWith("2026-")) {
+        alert("Please choose a date in 2026.");
+        return;
+      }
+      chosenDate = formatDate(v);
+      showFinal();
+    });
+
+    function showFinal(){
+      step4.classList.add("hidde
