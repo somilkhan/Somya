@@ -1,103 +1,141 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Be My Valentine?</title>
+<title>For Somya ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 
 body{
   margin:0;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
   font-family: 'Segoe UI', sans-serif;
-  overflow:hidden;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  overflow-x:hidden;
+  color:white;
+  text-align:center;
 }
 
-/* Floating hearts */
+/* floating hearts */
 .heart{
-  position:absolute;
-  width:20px;
-  height:20px;
-  background:red;
+  position:fixed;
+  width:18px;
+  height:18px;
+  background:#ff4d6d;
   transform: rotate(45deg);
-  animation: float 8s infinite ease-in;
-  opacity:0.6;
+  animation: float 10s infinite linear;
+  opacity:0.5;
 }
-
-.heart:before,
-.heart:after{
+.heart:before,.heart:after{
   content:'';
   position:absolute;
-  width:20px;
-  height:20px;
-  background:red;
+  width:18px;
+  height:18px;
+  background:#ff4d6d;
   border-radius:50%;
 }
-
-.heart:before{ top:-10px; left:0; }
-.heart:after{ left:-10px; top:0; }
+.heart:before{ top:-9px; left:0; }
+.heart:after{ left:-9px; top:0; }
 
 @keyframes float{
-  0%{ transform:translateY(100vh) rotate(45deg); }
+  0%{ transform:translateY(110vh) rotate(45deg); }
   100%{ transform:translateY(-10vh) rotate(45deg); }
 }
 
-/* Card */
-.card{
-  background:white;
-  padding:40px;
-  border-radius:20px;
-  text-align:center;
-  box-shadow:0 15px 40px rgba(0,0,0,0.2);
-  z-index:2;
+h1{
+  margin-top:40px;
+  font-size:36px;
 }
 
-h1{
+.love-text{
+  max-width:800px;
+  margin:20px auto;
+  font-size:18px;
+  line-height:1.6;
+  padding:0 20px;
+}
+
+/* gallery */
+.gallery{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:15px;
+  margin:30px 10px;
+}
+
+.gallery img{
+  border-radius:15px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+  object-fit:cover;
+}
+
+/* selfies */
+.selfie{
+  width:160px;
+  height:200px;
+}
+
+/* horizontals */
+.hori{
+  width:280px;
+  height:180px;
+}
+
+.card{
+  margin:40px auto;
+  background:white;
   color:#ff4d6d;
-  margin-bottom:30px;
+  width:320px;
+  padding:25px;
+  border-radius:20px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.3);
+  position:relative;
 }
 
 button{
-  padding:15px 30px;
-  font-size:20px;
+  padding:12px 25px;
+  font-size:18px;
   border:none;
-  border-radius:12px;
+  border-radius:10px;
   cursor:pointer;
-  margin:10px;
+  margin:8px;
   transition:0.3s;
 }
 
-#yes{
-  background:#ff4d6d;
-  color:white;
-}
-
-#no{
-  background:#eee;
-  color:#ff4d6d;
-  position:absolute;
-}
+#yes{ background:#ff4d6d; color:white; }
+#no{ background:#eee; color:#ff4d6d; position:absolute; }
 
 </style>
 </head>
 <body>
 
-<!-- Hearts generator -->
 <script>
-for(let i=0;i<25;i++){
+for(let i=0;i<30;i++){
   let h=document.createElement('div');
   h.className='heart';
   h.style.left=Math.random()*100+'vw';
-  h.style.animationDuration=(5+Math.random()*5)+'s';
+  h.style.animationDuration=(6+Math.random()*6)+'s';
   document.body.appendChild(h);
 }
 </script>
 
+<h1>Somya ❤️</h1>
+
+<div class="love-text">
+  From the moment you came into my life, everything started feeling softer, warmer, and happier.
+  This page is not just a question. It’s a little piece of how special you are to me.
+  Your smile, your vibes, your presence. Everything about you feels like home.
+</div>
+
+<div class="gallery">
+  <img src="s1.jpg" class="selfie">
+  <img src="s2.jpg" class="selfie">
+  <img src="h1.jpg" class="hori">
+  <img src="h2.jpg" class="hori">
+  <img src="h3.jpg" class="hori">
+</div>
+
 <div class="card">
-  <h1 id="question">Will you be my Valentine?</h1>
+  <h2 id="question">Will you be my Valentine, Somya?</h2>
   <button id="yes">Yes ❤️</button>
   <button id="no">No</button>
 </div>
@@ -108,13 +146,13 @@ let yes = document.getElementById("yes");
 let question = document.getElementById("question");
 
 let messages = [
-  "Are you sure?",
+  "Are you sure Somya?",
   "Think again 🥺",
   "Please?",
-  "Don't break my heart",
+  "You know you want to",
+  "Don’t break my heart",
   "Last chance!",
-  "You can't escape destiny",
-  "Just press Yes already 😭"
+  "You can’t escape destiny 😌"
 ];
 
 let index = 0;
@@ -126,17 +164,14 @@ no.addEventListener("mouseover", () => {
   question.innerText = messages[index % messages.length];
   index++;
 
-  let size = 20 + index * 5;
-  yes.style.fontSize = size + "px";
-  yes.style.padding = (15 + index * 3) + "px " + (30 + index * 5) + "px";
-
+  yes.style.transform = `scale(${1 + index * 0.1})`;
   no.style.transform = `scale(${1 - index * 0.05})`;
 });
 
 yes.onclick = () => {
   document.body.innerHTML = `
-    <h1 style="color:white;text-align:center;margin-top:40vh;font-size:45px;">
-    Yay ❤️ See you on Valentine!
+    <h1 style="margin-top:40vh;font-size:40px;">
+      I knew it Somya ❤️<br>Best Valentine Ever
     </h1>
   `;
 };
