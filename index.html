@@ -7,50 +7,44 @@
 <style>
 body{
   margin:0;
+  background:linear-gradient(180deg,#ffe3ec,#fff5f8);
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(160deg,#ffd6e0,#ffeef6);
-  height:100vh;
   overflow:hidden;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:#ff4d6d;
 }
 
-.screen{
-  position:relative;
+.slide{
+  height:100vh;
   width:100%;
-  height:100%;
   display:flex;
   justify-content:center;
   align-items:center;
   text-align:center;
+  flex-direction:column;
   padding:30px;
   box-sizing:border-box;
-}
-
-.content{
-  max-width:380px;
-  z-index:2;
+  position:relative;
+  transition:opacity 0.6s ease;
 }
 
 h1{
-  font-size:26px;
-  margin-bottom:20px;
-  line-height:1.4;
+  font-size:28px;
+  color:#ff4d6d;
+  line-height:1.5;
+  max-width:420px;
 }
 
 button{
-  padding:12px 26px;
-  font-size:18px;
+  margin-top:30px;
+  padding:12px 28px;
   border:none;
-  border-radius:12px;
+  border-radius:14px;
+  font-size:18px;
   background:#ff4d6d;
   color:white;
   cursor:pointer;
 }
 
-/* floating tilted pics */
+/* tilted photo style */
 .pic{
   position:absolute;
   width:150px;
@@ -59,130 +53,91 @@ button{
   border-radius:16px;
   box-shadow:0 15px 35px rgba(0,0,0,0.25);
   opacity:0;
-  transform:translateY(40px) rotate(0deg);
-  transition:0.8s ease;
+  transition:1s ease;
 }
 
-.show-left{
-  left:10px;
-  top:20%;
-  transform:translateY(0) rotate(-12deg);
-  opacity:1;
-}
+.left{ left:15px; top:20%; transform:rotate(-12deg); opacity:1; }
+.right{ right:15px; top:20%; transform:rotate(12deg); opacity:1; }
+.bottomL{ left:15px; bottom:12%; transform:rotate(10deg); opacity:1; }
+.bottomR{ right:15px; bottom:12%; transform:rotate(-10deg); opacity:1; }
+.center{ top:55%; left:50%; transform:translate(-50%,-50%) rotate(0); width:230px; height:150px; opacity:1; }
 
-.show-right{
-  right:10px;
-  top:20%;
-  transform:translateY(0) rotate(12deg);
-  opacity:1;
-}
-
-.show-bottom-left{
-  left:15px;
-  bottom:12%;
-  transform:rotate(10deg);
-  opacity:1;
-}
-
-.show-bottom-right{
-  right:15px;
-  bottom:12%;
-  transform:rotate(-10deg);
-  opacity:1;
-}
-
-.show-center{
-  top:55%;
-  left:50%;
-  transform:translate(-50%,-50%) rotate(0deg);
-  width:220px;
-  height:150px;
-  opacity:1;
-}
-
-/* yes no */
 #no{
   position:absolute;
   background:white;
   color:#ff4d6d;
 }
-
 </style>
 </head>
 
 <body>
 
-<div class="screen" id="screen">
+<div class="slide" id="slide">
+  <h1 id="text">Hey Somya 🙂</h1>
+  <button id="next">Tap</button>
 
   <img src="s1.jpg" class="pic" id="p1">
   <img src="s2.jpg" class="pic" id="p2">
   <img src="h1.jpg" class="pic" id="p3">
   <img src="h2.jpg" class="pic" id="p4">
   <img src="h3.jpg" class="pic" id="p5">
-
-  <div class="content">
-    <h1 id="text">Hey Somya<br>tap once</h1>
-    <button id="next">Tap</button>
-  </div>
-
 </div>
 
 <script>
-let step = 0;
-let text = document.getElementById("text");
-let next = document.getElementById("next");
+let step=0;
+let text=document.getElementById("text");
+let next=document.getElementById("next");
 
-next.onclick = () => {
+next.onclick=()=>{
   step++;
 
   if(step===1){
-    text.innerText="Okay… this one is cute";
-    p1.classList.add("show-left");
+    text.innerText="I made something small for you";
   }
 
   else if(step===2){
-    text.innerText="And this… unfair advantage";
-    p2.classList.add("show-right");
+    text.innerText="Because I noticed something...";
+    p1.classList.add("left");
   }
 
   else if(step===3){
-    text.innerText="I see what you’re doing here 😌";
-    p3.classList.add("show-center");
+    text.innerText="You look dangerously cute in photos";
+    p2.classList.add("right");
   }
 
   else if(step===4){
-    text.innerText="Yeah… now I’m convinced";
-    p4.classList.add("show-bottom-left");
-    p5.classList.add("show-bottom-right");
+    text.innerText="And this is where it gets unfair";
+    p3.classList.add("center");
   }
 
   else if(step===5){
-    showFinal();
+    text.innerText="Yeah... I had to use these too 😌";
+    p4.classList.add("bottomL");
+    p5.classList.add("bottomR");
+  }
+
+  else if(step===6){
+    finalQuestion();
   }
 };
 
-function showFinal(){
-  document.getElementById("screen").innerHTML = `
-    <div class="content">
-      <h1>So Somya…<br>will you be my Valentine?</h1>
-      <button id="yes">Yes ❤️</button>
-      <button id="no">No</button>
-    </div>
+function finalQuestion(){
+  document.getElementById("slide").innerHTML=`
+    <h1>So Somya...<br>will you be my Valentine?</h1>
+    <button id="yes">Yes ❤️</button>
+    <button id="no">No</button>
   `;
 
-  let no = document.getElementById("no");
-
-  no.addEventListener("mouseover", () => {
-    no.style.left = Math.random() * (window.innerWidth - 100) + "px";
-    no.style.top = Math.random() * (window.innerHeight - 50) + "px";
+  let no=document.getElementById("no");
+  no.addEventListener("mouseover",()=>{
+    no.style.left=Math.random()*(window.innerWidth-100)+"px";
+    no.style.top=Math.random()*(window.innerHeight-50)+"px";
   });
 
-  document.getElementById("yes").onclick = () => {
-    document.body.innerHTML = `
-      <div class="screen">
-        <div class="content">
-          <h1>Yay ❤️<br>See you on Valentine, Somya</h1>
-        </div>
+  document.getElementById("yes").onclick=()=>{
+    document.body.innerHTML=`
+      <div class="slide">
+        <h1>Yay ❤️<br>See you on Valentine, Somya</h1>
       </div>
     `;
   };
