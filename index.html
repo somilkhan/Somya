@@ -1,178 +1,126 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>For Somya ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
+<title>Hey Somya</title>
 
+<style>
 body{
   margin:0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
-  overflow-x:hidden;
-  color:white;
+  background: linear-gradient(160deg,#ffd6e0,#ffeaf4);
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
   text-align:center;
+  color:#ff4d6d;
 }
 
-/* floating hearts */
-.heart{
-  position:fixed;
-  width:18px;
-  height:18px;
-  background:#ff4d6d;
-  transform: rotate(45deg);
-  animation: float 10s infinite linear;
-  opacity:0.5;
+.slide{
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  animation: fade 0.6s ease;
+  padding:20px;
 }
-.heart:before,.heart:after{
-  content:'';
-  position:absolute;
-  width:18px;
-  height:18px;
-  background:#ff4d6d;
-  border-radius:50%;
-}
-.heart:before{ top:-9px; left:0; }
-.heart:after{ left:-9px; top:0; }
 
-@keyframes float{
-  0%{ transform:translateY(110vh) rotate(45deg); }
-  100%{ transform:translateY(-10vh) rotate(45deg); }
+.active{ display:flex; }
+
+@keyframes fade{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
 }
 
 h1{
-  margin-top:40px;
-  font-size:36px;
+  font-size:26px;
+  margin-bottom:25px;
 }
 
-.love-text{
-  max-width:800px;
-  margin:20px auto;
-  font-size:18px;
-  line-height:1.6;
-  padding:0 20px;
+img{
+  border-radius:18px;
+  margin:8px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
-/* gallery */
-.gallery{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:15px;
-  margin:30px 10px;
-}
-
-.gallery img{
-  border-radius:15px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.3);
-  object-fit:cover;
-}
-
-/* selfies */
-.selfie{
-  width:160px;
-  height:200px;
-}
-
-/* horizontals */
-.hori{
-  width:280px;
-  height:180px;
-}
-
-.card{
-  margin:40px auto;
-  background:white;
-  color:#ff4d6d;
-  width:320px;
-  padding:25px;
-  border-radius:20px;
-  box-shadow:0 15px 40px rgba(0,0,0,0.3);
-  position:relative;
-}
+.selfie{ width:160px; height:200px; object-fit:cover; }
+.hori{ width:260px; height:170px; object-fit:cover; }
 
 button{
+  margin-top:25px;
   padding:12px 25px;
   font-size:18px;
   border:none;
-  border-radius:10px;
+  border-radius:12px;
   cursor:pointer;
-  margin:8px;
-  transition:0.3s;
+  background:#ff4d6d;
+  color:white;
 }
 
-#yes{ background:#ff4d6d; color:white; }
-#no{ background:#eee; color:#ff4d6d; position:absolute; }
-
+#no{
+  position:absolute;
+  background:white;
+  color:#ff4d6d;
+}
 </style>
 </head>
+
 <body>
 
-<script>
-for(let i=0;i<30;i++){
-  let h=document.createElement('div');
-  h.className='heart';
-  h.style.left=Math.random()*100+'vw';
-  h.style.animationDuration=(6+Math.random()*6)+'s';
-  document.body.appendChild(h);
-}
-</script>
-
-<h1>Somya ❤️</h1>
-
-<div class="love-text">
-  From the moment you came into my life, everything started feeling softer, warmer, and happier.
-  This page is not just a question. It’s a little piece of how special you are to me.
-  Your smile, your vibes, your presence. Everything about you feels like home.
+<!-- Slide 1 -->
+<div class="slide active" id="s1">
+  <h1>Hey Somya 🙂<br>Tap for a tiny surprise</h1>
+  <button onclick="next(1)">Tap</button>
 </div>
 
-<div class="gallery">
+<!-- Slide 2 -->
+<div class="slide" id="s2">
+  <h1>You look really cute here</h1>
   <img src="s1.jpg" class="selfie">
+  <button onclick="next(2)">Next</button>
+</div>
+
+<!-- Slide 3 -->
+<div class="slide" id="s3">
+  <h1>Okay wait… it gets better</h1>
   <img src="s2.jpg" class="selfie">
   <img src="h1.jpg" class="hori">
-  <img src="h2.jpg" class="hori">
-  <img src="h3.jpg" class="hori">
+  <button onclick="next(3)">Next</button>
 </div>
 
-<div class="card">
-  <h2 id="question">Will you be my Valentine, Somya?</h2>
+<!-- Slide 4 -->
+<div class="slide" id="s4">
+  <h1>This is unfair now 😌</h1>
+  <img src="h2.jpg" class="hori">
+  <img src="h3.jpg" class="hori">
+  <button onclick="next(4)">Next</button>
+</div>
+
+<!-- Final Slide -->
+<div class="slide" id="s5">
+  <h1 id="q">So Somya… will you be my Valentine?</h1>
   <button id="yes">Yes ❤️</button>
   <button id="no">No</button>
 </div>
 
 <script>
+function next(n){
+  document.getElementById("s"+n).classList.remove("active");
+  document.getElementById("s"+(n+1)).classList.add("active");
+}
+
 let no = document.getElementById("no");
-let yes = document.getElementById("yes");
-let question = document.getElementById("question");
-
-let messages = [
-  "Are you sure Somya?",
-  "Think again 🥺",
-  "Please?",
-  "You know you want to",
-  "Don’t break my heart",
-  "Last chance!",
-  "You can’t escape destiny 😌"
-];
-
-let index = 0;
-
 no.addEventListener("mouseover", () => {
   no.style.left = Math.random() * (window.innerWidth - 100) + "px";
   no.style.top = Math.random() * (window.innerHeight - 50) + "px";
-
-  question.innerText = messages[index % messages.length];
-  index++;
-
-  yes.style.transform = `scale(${1 + index * 0.1})`;
-  no.style.transform = `scale(${1 - index * 0.05})`;
 });
 
-yes.onclick = () => {
+document.getElementById("yes").onclick = () => {
   document.body.innerHTML = `
-    <h1 style="margin-top:40vh;font-size:40px;">
-      I knew it Somya ❤️<br>Best Valentine Ever
-    </h1>
+    <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(160deg,#ffd6e0,#ffeaf4);color:#ff4d6d;font-family:Segoe UI;text-align:center;">
+      <h1>Yay ❤️<br>See you on Valentine, Somya</h1>
+    </div>
   `;
 };
 </script>
