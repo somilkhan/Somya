@@ -2,127 +2,191 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hey Somya</title>
+<title>Somya</title>
 
 <style>
 body{
   margin:0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(160deg,#ffd6e0,#ffeaf4);
+  background: linear-gradient(160deg,#ffd6e0,#ffeef6);
   height:100vh;
   overflow:hidden;
   display:flex;
   justify-content:center;
   align-items:center;
-  text-align:center;
   color:#ff4d6d;
 }
 
-.slide{
-  display:none;
-  flex-direction:column;
+.screen{
+  position:relative;
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
   align-items:center;
-  animation: fade 0.6s ease;
-  padding:20px;
+  text-align:center;
+  padding:30px;
+  box-sizing:border-box;
 }
 
-.active{ display:flex; }
-
-@keyframes fade{
-  from{opacity:0; transform:translateY(20px);}
-  to{opacity:1; transform:translateY(0);}
+.content{
+  max-width:380px;
+  z-index:2;
 }
 
 h1{
   font-size:26px;
-  margin-bottom:25px;
+  margin-bottom:20px;
+  line-height:1.4;
 }
-
-img{
-  border-radius:18px;
-  margin:8px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.2);
-}
-
-.selfie{ width:160px; height:200px; object-fit:cover; }
-.hori{ width:260px; height:170px; object-fit:cover; }
 
 button{
-  margin-top:25px;
-  padding:12px 25px;
+  padding:12px 26px;
   font-size:18px;
   border:none;
   border-radius:12px;
-  cursor:pointer;
   background:#ff4d6d;
   color:white;
+  cursor:pointer;
 }
 
+/* floating tilted pics */
+.pic{
+  position:absolute;
+  width:150px;
+  height:190px;
+  object-fit:cover;
+  border-radius:16px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.25);
+  opacity:0;
+  transform:translateY(40px) rotate(0deg);
+  transition:0.8s ease;
+}
+
+.show-left{
+  left:10px;
+  top:20%;
+  transform:translateY(0) rotate(-12deg);
+  opacity:1;
+}
+
+.show-right{
+  right:10px;
+  top:20%;
+  transform:translateY(0) rotate(12deg);
+  opacity:1;
+}
+
+.show-bottom-left{
+  left:15px;
+  bottom:12%;
+  transform:rotate(10deg);
+  opacity:1;
+}
+
+.show-bottom-right{
+  right:15px;
+  bottom:12%;
+  transform:rotate(-10deg);
+  opacity:1;
+}
+
+.show-center{
+  top:55%;
+  left:50%;
+  transform:translate(-50%,-50%) rotate(0deg);
+  width:220px;
+  height:150px;
+  opacity:1;
+}
+
+/* yes no */
 #no{
   position:absolute;
   background:white;
   color:#ff4d6d;
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- Slide 1 -->
-<div class="slide active" id="s1">
-  <h1>Hey Somya 🙂<br>Tap for a tiny surprise</h1>
-  <button onclick="next(1)">Tap</button>
-</div>
+<div class="screen" id="screen">
 
-<!-- Slide 2 -->
-<div class="slide" id="s2">
-  <h1>You look really cute here</h1>
-  <img src="s1.jpg" class="selfie">
-  <button onclick="next(2)">Next</button>
-</div>
+  <img src="s1.jpg" class="pic" id="p1">
+  <img src="s2.jpg" class="pic" id="p2">
+  <img src="h1.jpg" class="pic" id="p3">
+  <img src="h2.jpg" class="pic" id="p4">
+  <img src="h3.jpg" class="pic" id="p5">
 
-<!-- Slide 3 -->
-<div class="slide" id="s3">
-  <h1>Okay wait… it gets better</h1>
-  <img src="s2.jpg" class="selfie">
-  <img src="h1.jpg" class="hori">
-  <button onclick="next(3)">Next</button>
-</div>
+  <div class="content">
+    <h1 id="text">Hey Somya<br>tap once</h1>
+    <button id="next">Tap</button>
+  </div>
 
-<!-- Slide 4 -->
-<div class="slide" id="s4">
-  <h1>This is unfair now 😌</h1>
-  <img src="h2.jpg" class="hori">
-  <img src="h3.jpg" class="hori">
-  <button onclick="next(4)">Next</button>
-</div>
-
-<!-- Final Slide -->
-<div class="slide" id="s5">
-  <h1 id="q">So Somya… will you be my Valentine?</h1>
-  <button id="yes">Yes ❤️</button>
-  <button id="no">No</button>
 </div>
 
 <script>
-function next(n){
-  document.getElementById("s"+n).classList.remove("active");
-  document.getElementById("s"+(n+1)).classList.add("active");
-}
+let step = 0;
+let text = document.getElementById("text");
+let next = document.getElementById("next");
 
-let no = document.getElementById("no");
-no.addEventListener("mouseover", () => {
-  no.style.left = Math.random() * (window.innerWidth - 100) + "px";
-  no.style.top = Math.random() * (window.innerHeight - 50) + "px";
-});
+next.onclick = () => {
+  step++;
 
-document.getElementById("yes").onclick = () => {
-  document.body.innerHTML = `
-    <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(160deg,#ffd6e0,#ffeaf4);color:#ff4d6d;font-family:Segoe UI;text-align:center;">
-      <h1>Yay ❤️<br>See you on Valentine, Somya</h1>
+  if(step===1){
+    text.innerText="Okay… this one is cute";
+    p1.classList.add("show-left");
+  }
+
+  else if(step===2){
+    text.innerText="And this… unfair advantage";
+    p2.classList.add("show-right");
+  }
+
+  else if(step===3){
+    text.innerText="I see what you’re doing here 😌";
+    p3.classList.add("show-center");
+  }
+
+  else if(step===4){
+    text.innerText="Yeah… now I’m convinced";
+    p4.classList.add("show-bottom-left");
+    p5.classList.add("show-bottom-right");
+  }
+
+  else if(step===5){
+    showFinal();
+  }
+};
+
+function showFinal(){
+  document.getElementById("screen").innerHTML = `
+    <div class="content">
+      <h1>So Somya…<br>will you be my Valentine?</h1>
+      <button id="yes">Yes ❤️</button>
+      <button id="no">No</button>
     </div>
   `;
-};
+
+  let no = document.getElementById("no");
+
+  no.addEventListener("mouseover", () => {
+    no.style.left = Math.random() * (window.innerWidth - 100) + "px";
+    no.style.top = Math.random() * (window.innerHeight - 50) + "px";
+  });
+
+  document.getElementById("yes").onclick = () => {
+    document.body.innerHTML = `
+      <div class="screen">
+        <div class="content">
+          <h1>Yay ❤️<br>See you on Valentine, Somya</h1>
+        </div>
+      </div>
+    `;
+  };
+}
 </script>
 
 </body>
