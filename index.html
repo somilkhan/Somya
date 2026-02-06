@@ -1,170 +1,131 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>For Somya</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Be my Valentine</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-}
-
+/* ===== ORIGINAL STYLE SAME ===== */
 body{
-    height:100vh;
-    overflow:hidden;
-    background:linear-gradient(135deg,#ffd6e7,#ffeaf4,#fff0f7);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    color:#333;
+  margin:0;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  font-family:sans-serif;
+  background:linear-gradient(135deg,#ffe6f0,#ffd6e8);
+  overflow:hidden;
 }
 
-.container{
-    position:relative;
-    width:100%;
-    height:100%;
+/* Floating side photos */
+.pic{
+  position:fixed;
+  width:160px;
+  height:200px;
+  object-fit:cover;
+  border-radius:18px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+  opacity:0;
+  transition:1s ease;
+  z-index:1;
+  pointer-events:none;
+}
+.leftPic{ left:-220px; transform:rotate(-12deg); }
+.rightPic{ right:-220px; transform:rotate(12deg); }
+
+.showLeft{ left:20px; opacity:1; }
+.showRight{ right:20px; opacity:1; }
+
+.card{
+  width:min(680px,94vw);
+  background:#fff;
+  border-radius:24px;
+  padding:26px 20px;
+  text-align:center;
+  position:relative;
+  z-index:2;
 }
 
-.textBox{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    max-width:80%;
-    font-size:24px;
-    font-weight:500;
-    cursor:pointer;
-    transition:0.4s;
+button{
+  padding:14px 24px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  font-size:16px;
 }
 
-.textBox:hover{
-    transform:translate(-50%,-50%) scale(1.03);
+#yes{
+  background:#ff4d88;
+  color:#fff;
 }
 
-.photo{
-    position:absolute;
-    width:240px;
-    border-radius:18px;
-    box-shadow:0 20px 40px rgba(0,0,0,0.15);
-    opacity:0;
-    transform:scale(0.8) rotate(-10deg);
-    transition:0.8s ease;
+#no{
+  background:#e9e9e9;
 }
 
-.show{
-    opacity:1;
-    transform:scale(1) rotate(0deg);
+.area{
+  margin-top:20px;
+  height:120px;
+  position:relative;
 }
 
-/* Positions */
-#p1{ left:-60px; top:20%; transform:rotate(-12deg); }
-#p2{ right:-60px; top:18%; transform:rotate(12deg); }
-
-#p3{ left:-70px; bottom:15%; transform:rotate(-15deg); }
-#p4{ right:-70px; bottom:12%; transform:rotate(15deg); }
-
-#p5{
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%) rotate(0deg) scale(0.7);
-    width:300px;
+#yes,#no{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
 }
 
-.heart{
-    position:absolute;
-    width:18px;
-    height:18px;
-    background:red;
-    transform:rotate(45deg);
-    animation:float 6s infinite ease-in;
-    opacity:0.6;
-}
+#yes{left:40px;}
+#no{right:40px;}
 
-.heart:before,.heart:after{
-    content:'';
-    position:absolute;
-    width:18px;
-    height:18px;
-    background:red;
-    border-radius:50%;
-}
-
-.heart:before{ top:-9px; left:0; }
-.heart:after{ left:-9px; top:0; }
-
-@keyframes float{
-    0%{ bottom:-10%; opacity:0;}
-    50%{ opacity:0.7;}
-    100%{ bottom:110%; opacity:0;}
-}
+.hidden{display:none;}
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- Somya photos -->
+<img src="s1.jpg" class="pic leftPic" id="p1" style="top:10%">
+<img src="s2.jpg" class="pic rightPic" id="p2" style="top:18%">
+<img src="h1.jpg" class="pic leftPic" id="p3" style="bottom:28%">
+<img src="h2.jpg" class="pic rightPic" id="p4" style="bottom:22%">
+<img src="h3.jpg" class="pic leftPic" id="p5" style="bottom:8%">
 
-<div class="textBox" id="text">
-I made something for you Somya<br><br>tap
+<div class="card">
+<h1>Will you be my Valentine Somya? 💘</h1>
+
+<div class="area">
+<button id="yes">Yes 💖</button>
+<button id="no">No</button>
 </div>
-
-<img src="s1.jpg" class="photo" id="p1">
-<img src="s2.jpg" class="photo" id="p2">
-<img src="h1.jpg" class="photo" id="p3">
-<img src="h2.jpg" class="photo" id="p4">
-<img src="h3.jpg" class="photo" id="p5">
 
 </div>
 
 <script>
-let step=0;
-const text=document.getElementById("text");
+const yesBtn=document.getElementById("yes");
+const noBtn=document.getElementById("no");
 
-text.addEventListener("click",()=>{
+const p1=document.getElementById("p1");
+const p2=document.getElementById("p2");
+const p3=document.getElementById("p3");
+const p4=document.getElementById("p4");
+const p5=document.getElementById("p5");
 
-    step++;
-
-    if(step===1){
-        text.innerHTML="I didn’t expect someone this cute to appear on my hinge";
-        p1.classList.add("show");
-    }
-
-    else if(step===2){
-        text.innerHTML="Then you added me on Instagram and suddenly my feed got prettier";
-        p2.classList.add("show");
-    }
-
-    else if(step===3){
-        text.innerHTML="Why do you look this good in every angle though?";
-        p3.classList.add("show");
-        p4.classList.add("show");
-    }
-
-    else if(step===4){
-        text.innerHTML="I swear these pictures feel illegal to look at for free";
-        p5.classList.add("show");
-    }
-
-    else if(step===5){
-        text.innerHTML="So tell me Somya... was matching with me your best decision this week?";
-    }
+// No button dodge
+noBtn.addEventListener("mouseover",()=>{
+  const x=Math.random()*200-100;
+  const y=Math.random()*80-40;
+  noBtn.style.transform=`translate(${x}px,${y}px)`;
 });
 
-// floating hearts
-for(let i=0;i<25;i++){
-    let h=document.createElement("div");
-    h.className="heart";
-    h.style.left=Math.random()*100+"%";
-    h.style.animationDelay=Math.random()*6+"s";
-    document.body.appendChild(h);
-}
+// Photo reveal flow
+yesBtn.addEventListener("click",()=>{
+  setTimeout(()=>p1.classList.add("showLeft"),300);
+  setTimeout(()=>p2.classList.add("showRight"),800);
+  setTimeout(()=>p3.classList.add("showLeft"),1400);
+  setTimeout(()=>p4.classList.add("showRight"),2000);
+  setTimeout(()=>p5.classList.add("showLeft"),2600);
+});
 </script>
 
 </body>
