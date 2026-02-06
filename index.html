@@ -1,165 +1,170 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Somya ❤️</title>
+<title>For Somya</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
 body{
-  margin:0;
-  height:100vh;
-  overflow:hidden;
-  font-family:system-ui;
-  background:linear-gradient(135deg,#ffd6e8,#ffe6f0);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
+    height:100vh;
+    overflow:hidden;
+    background:linear-gradient(135deg,#ffd6e7,#ffeaf4,#fff0f7);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:#333;
 }
 
-/* floating hearts */
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:url("https://i.imgur.com/8Qf6K6G.png") repeat;
-  opacity:.08;
-  animation:moveBg 40s linear infinite;
-}
-@keyframes moveBg{
-  from{background-position:0 0;}
-  to{background-position:0 1000px;}
+.container{
+    position:relative;
+    width:100%;
+    height:100%;
 }
 
-.scene{
-  position:absolute;
-  width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  transition:0.8s ease;
+.textBox{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    max-width:80%;
+    font-size:24px;
+    font-weight:500;
+    cursor:pointer;
+    transition:0.4s;
 }
 
-.hidden{opacity:0; pointer-events:none;}
-
-h1{
-  font-size:28px;
-  width:80%;
-  z-index:5;
+.textBox:hover{
+    transform:translate(-50%,-50%) scale(1.03);
 }
 
-.tap{
-  margin-top:20px;
-  padding:14px 26px;
-  border-radius:30px;
-  background:#ff4d88;
-  color:white;
-  border:none;
-  font-size:16px;
+.photo{
+    position:absolute;
+    width:240px;
+    border-radius:18px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.15);
+    opacity:0;
+    transform:scale(0.8) rotate(-10deg);
+    transition:0.8s ease;
 }
 
-.pic{
-  position:absolute;
-  width:170px;
-  height:210px;
-  object-fit:cover;
-  border-radius:18px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.25);
-  opacity:0;
-  transition:1s ease;
-  pointer-events:none;
+.show{
+    opacity:1;
+    transform:scale(1) rotate(0deg);
 }
 
-.leftStart{ transform:rotate(-15deg) translateX(-220px); }
-.rightStart{ transform:rotate(15deg) translateX(220px); }
+/* Positions */
+#p1{ left:-60px; top:20%; transform:rotate(-12deg); }
+#p2{ right:-60px; top:18%; transform:rotate(12deg); }
 
-.showLeft{
-  opacity:1;
-  transform:rotate(-10deg) translateX(-40px);
-}
-.showRight{
-  opacity:1;
-  transform:rotate(10deg) translateX(40px);
-}
+#p3{ left:-70px; bottom:15%; transform:rotate(-15deg); }
+#p4{ right:-70px; bottom:12%; transform:rotate(15deg); }
 
-.buttons{
-  margin-top:30px;
+#p5{
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) rotate(0deg) scale(0.7);
+    width:300px;
 }
 
-button{
-  padding:14px 26px;
-  border-radius:30px;
-  border:none;
-  margin:10px;
-  font-size:16px;
+.heart{
+    position:absolute;
+    width:18px;
+    height:18px;
+    background:red;
+    transform:rotate(45deg);
+    animation:float 6s infinite ease-in;
+    opacity:0.6;
 }
 
-#yes{background:#ff4d88;color:white;}
-#no{background:#eee; position:relative;}
+.heart:before,.heart:after{
+    content:'';
+    position:absolute;
+    width:18px;
+    height:18px;
+    background:red;
+    border-radius:50%;
+}
+
+.heart:before{ top:-9px; left:0; }
+.heart:after{ left:-9px; top:0; }
+
+@keyframes float{
+    0%{ bottom:-10%; opacity:0;}
+    50%{ opacity:0.7;}
+    100%{ bottom:110%; opacity:0;}
+}
 </style>
 </head>
 
 <body>
 
-<!-- Your Photos -->
-<img src="s1.jpg" class="pic leftStart" id="p1" style="top:12%;left:0;">
-<img src="s2.jpg" class="pic rightStart" id="p2" style="top:18%;right:0;">
-<img src="h1.jpg" class="pic leftStart" id="p3" style="bottom:28%;left:0;">
-<img src="h2.jpg" class="pic rightStart" id="p4" style="bottom:22%;right:0;">
-<img src="h3.jpg" class="pic leftStart" id="p5" style="bottom:5%;left:30%;">
+<div class="container">
 
-<!-- Scenes -->
-<div class="scene" id="s1">
-  <h1>I wasn’t going to do this…</h1>
-  <button class="tap" onclick="next(1)">Tap</button>
+<div class="textBox" id="text">
+I made something for you Somya<br><br>tap
 </div>
 
-<div class="scene hidden" id="s2">
-  <h1>But then I matched with you on Hinge</h1>
-  <button class="tap" onclick="next(2)">Tap</button>
-</div>
+<img src="s1.jpg" class="photo" id="p1">
+<img src="s2.jpg" class="photo" id="p2">
+<img src="h1.jpg" class="photo" id="p3">
+<img src="h2.jpg" class="photo" id="p4">
+<img src="h3.jpg" class="photo" id="p5">
 
-<div class="scene hidden" id="s3">
-  <h1>And your vibe hasn’t left my head since</h1>
-  <button class="tap" onclick="next(3)">Tap</button>
-</div>
-
-<div class="scene hidden" id="s4">
-  <h1>So Somya… be honest</h1>
-  <div class="buttons">
-    <button id="yes">Yes 💖</button>
-    <button id="no">No</button>
-  </div>
 </div>
 
 <script>
-function next(step){
-  document.getElementById("s"+step).classList.add("hidden");
-  document.getElementById("s"+(step+1)).classList.remove("hidden");
+let step=0;
+const text=document.getElementById("text");
 
-  if(step==1){ p1.classList.add("showLeft"); }
-  if(step==2){ p2.classList.add("showRight"); }
-  if(step==3){
-    p3.classList.add("showLeft");
-    p4.classList.add("showRight");
-    p5.classList.add("showLeft");
-  }
-}
+text.addEventListener("click",()=>{
 
-// moving NO button
-const noBtn=document.getElementById("no");
-noBtn.addEventListener("mouseover",()=>{
-  const x=Math.random()*200-100;
-  const y=Math.random()*100-50;
-  noBtn.style.transform=`translate(${x}px,${y}px)`;
+    step++;
+
+    if(step===1){
+        text.innerHTML="I didn’t expect someone this cute to appear on my hinge";
+        p1.classList.add("show");
+    }
+
+    else if(step===2){
+        text.innerHTML="Then you added me on Instagram and suddenly my feed got prettier";
+        p2.classList.add("show");
+    }
+
+    else if(step===3){
+        text.innerHTML="Why do you look this good in every angle though?";
+        p3.classList.add("show");
+        p4.classList.add("show");
+    }
+
+    else if(step===4){
+        text.innerHTML="I swear these pictures feel illegal to look at for free";
+        p5.classList.add("show");
+    }
+
+    else if(step===5){
+        text.innerHTML="So tell me Somya... was matching with me your best decision this week?";
+    }
 });
 
-// yes action
-document.getElementById("yes").onclick=()=>{
-  document.body.innerHTML="<h1 style='font-family:system-ui'>Yay ❤️ See you on our date Somya</h1>";
-};
+// floating hearts
+for(let i=0;i<25;i++){
+    let h=document.createElement("div");
+    h.className="heart";
+    h.style.left=Math.random()*100+"%";
+    h.style.animationDelay=Math.random()*6+"s";
+    document.body.appendChild(h);
+}
 </script>
 
 </body>
