@@ -2,23 +2,62 @@
 <html>
 <head>
 <title>Be My Valentine?</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+
 body{
   margin:0;
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:#ffb6c1;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   overflow:hidden;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+}
+
+/* Floating hearts */
+.heart{
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:red;
+  transform: rotate(45deg);
+  animation: float 8s infinite ease-in;
+  opacity:0.6;
+}
+
+.heart:before,
+.heart:after{
+  content:'';
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:red;
+  border-radius:50%;
+}
+
+.heart:before{ top:-10px; left:0; }
+.heart:after{ left:-10px; top:0; }
+
+@keyframes float{
+  0%{ transform:translateY(100vh) rotate(45deg); }
+  100%{ transform:translateY(-10vh) rotate(45deg); }
+}
+
+/* Card */
+.card{
+  background:white;
+  padding:40px;
+  border-radius:20px;
   text-align:center;
+  box-shadow:0 15px 40px rgba(0,0,0,0.2);
+  z-index:2;
 }
 
 h1{
-  color:white;
-  font-size:40px;
-  margin-bottom:40px;
+  color:#ff4d6d;
+  margin-bottom:30px;
 }
 
 button{
@@ -27,24 +66,37 @@ button{
   border:none;
   border-radius:12px;
   cursor:pointer;
+  margin:10px;
   transition:0.3s;
 }
 
 #yes{
-  background:red;
+  background:#ff4d6d;
   color:white;
 }
 
 #no{
-  background:white;
-  color:red;
+  background:#eee;
+  color:#ff4d6d;
   position:absolute;
 }
+
 </style>
 </head>
 <body>
 
-<div>
+<!-- Hearts generator -->
+<script>
+for(let i=0;i<25;i++){
+  let h=document.createElement('div');
+  h.className='heart';
+  h.style.left=Math.random()*100+'vw';
+  h.style.animationDuration=(5+Math.random()*5)+'s';
+  document.body.appendChild(h);
+}
+</script>
+
+<div class="card">
   <h1 id="question">Will you be my Valentine?</h1>
   <button id="yes">Yes ❤️</button>
   <button id="no">No</button>
@@ -82,7 +134,11 @@ no.addEventListener("mouseover", () => {
 });
 
 yes.onclick = () => {
-  document.body.innerHTML = "<h1 style='color:white;margin-top:40vh;'>I knew it ❤️ See you on Valentine!</h1>";
+  document.body.innerHTML = `
+    <h1 style="color:white;text-align:center;margin-top:40vh;font-size:45px;">
+    Yay ❤️ See you on Valentine!
+    </h1>
+  `;
 };
 </script>
 
